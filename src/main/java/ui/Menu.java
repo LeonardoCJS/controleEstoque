@@ -74,7 +74,12 @@ public class Menu {
                 throw new EstoqueException(e.getMessage());
             }
             System.out.println("Digite a quantidade do produto: ");
-            int quantidade = Integer.parseInt(sc.nextLine());
+            int quantidade;
+            try {
+                quantidade = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                throw new EstoqueException("Quantidade inválida.");
+            }
             System.out.println("Digite a categoria do produto: ");
             Categoria categoria = lerCategoria();
             estoqueService.inserirProduto(new Produto(nome, descricao, preco,  quantidade, categoria));
@@ -131,7 +136,12 @@ public class Menu {
                 throw new EstoqueException(e.getMessage());
             }
             System.out.println("Digite a quantidade do produto: ");
-            int quantidade = Integer.parseInt(sc.nextLine());
+            int quantidade;
+            try {
+                quantidade = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                throw new EstoqueException("Quantidade inválida.");
+            }
             System.out.println("Digite a categoria do produto: ");
             Categoria categoria = lerCategoria();
             Long id = produtos.get(escolha).getId();
@@ -150,7 +160,13 @@ public class Menu {
     private void buscarPorId(){
         try{
             System.out.println("Digite o id do produto: ");
-            long id = Long.parseLong(sc.nextLine());
+            long id;
+            try {
+                id = Long.parseLong(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: ID inválido.");
+                return;
+            }
             Produto produto = estoqueService.buscarPorId(id);
             System.out.println("Resultado da busca: " + produto);
         }catch(EstoqueException e){
@@ -262,7 +278,7 @@ public class Menu {
         try{
             return Categoria.valueOf(categoriaInput.toUpperCase());
         }catch(IllegalArgumentException e){
-            throw new IllegalArgumentException("Categoria invalida: " + categoriaInput);
+            throw new EstoqueException("Categoria invalida: " + categoriaInput);
         }
     }
 }
